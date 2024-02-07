@@ -1,8 +1,10 @@
 package ru.com.bulat.shoppinglistviews.domain
 
-class editShopItemUseCase {
+class editShopItemUseCase(
+    private val shopListRepository: ShopListRepository
+) {
 
     fun editShopItem (shopItem: ShopItem){
-        TODO()
+        shopListRepository.editShopItem(shopItem)
     }
 }

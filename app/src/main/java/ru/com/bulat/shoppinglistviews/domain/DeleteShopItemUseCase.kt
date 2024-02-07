@@ -1,8 +1,10 @@
 package ru.com.bulat.shoppinglistviews.domain
 
-class DeleteShopItemUseCase {
+class DeleteShopItemUseCase(
+    private val shopListRepository: ShopListRepository
+) {
 
     fun deleteShopItemUseCase(shopItem: ShopItem){
-        TODO()
+        shopListRepository.deleteShopItemUseCase(shopItem)
     }
 }
