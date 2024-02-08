@@ -1,6 +1,6 @@
 package ru.com.bulat.shoppinglistviews.domain
 
-class editShopItemUseCase(
+class EditShopItemUseCase(
     private val shopListRepository: ShopListRepository
 ) {
 
