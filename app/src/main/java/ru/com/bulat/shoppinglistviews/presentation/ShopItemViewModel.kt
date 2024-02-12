@@ -26,7 +26,7 @@ class ShopItemViewModel : ViewModel() {
         get() =  _errorInputCount
 
     private val _shopItem = MutableLiveData<ShopItem>()
-    val shopIem : LiveData<ShopItem>
+    val shopItem : LiveData<ShopItem>
         get() = _shopItem
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
