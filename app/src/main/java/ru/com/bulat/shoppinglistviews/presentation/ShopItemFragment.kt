@@ -71,7 +71,7 @@ class ShopItemFragment(
         }
 
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            finish()
+            activity?.onBackPressed()
         }
     }
 
@@ -153,6 +153,14 @@ class ShopItemFragment(
 
         private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
 
+        fun newInstanceAddItem() : ShopItemFragment {
+            return ShopItemFragment(MODE_ADD)
+        }
+
+        fun newInstanceEditItem(shopItemId : Int) : ShopItemFragment {
+            return ShopItemFragment(MODE_EDIT, shopItemId)
+        }
+
         fun newIntentAddItem(context : Context) : Intent {
             val intent = Intent(context, ShopItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
@@ -165,6 +173,8 @@ class ShopItemFragment(
             intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
             return intent
         }
+
+
 
     }
 }
