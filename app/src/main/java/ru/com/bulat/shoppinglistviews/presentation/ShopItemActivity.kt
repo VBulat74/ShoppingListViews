@@ -3,11 +3,12 @@ package ru.com.bulat.shoppinglistviews.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.com.bulat.shoppinglistviews.R
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
 
     private var screenMode : String = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
@@ -21,6 +22,11 @@ class ShopItemActivity : AppCompatActivity() {
         if (savedInstanceState ==null) {
             launchRightMode()
         }
+    }
+
+    override fun onEditingFinish() {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     private fun launchRightMode () {
