@@ -2,6 +2,7 @@ package ru.com.bulat.shoppinglistviews.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
 import ru.com.bulat.shoppinglistviews.domain.ShopListRepository
 
@@ -30,5 +31,13 @@ class ShopListRepositoryImpl (
         return mapper.mapDbModelToEntity(dbModel)
     }
 
-    override fun getShopList(): LiveData<List<ShopItem>> = shopListDao.getShopList()
+//    override fun getShopList(): LiveData<List<ShopItem>> = MediatorLiveData<List<ShopItem>>().apply {
+//        addSource(shopListDao.getShopList()){
+//            value = mapper.mapListDbModelToListEntity(it)
+//        }
+//    }
+
+    override fun getShopList(): LiveData<List<ShopItem>> = shopListDao.getShopList().map {
+        mapper.mapListDbModelToListEntity(it)
+    }
 }
