@@ -1,15 +1,16 @@
 package ru.com.bulat.shoppinglistviews.presentation
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import ru.com.bulat.shoppinglistviews.data.ShopListRepositoryImpl
 import ru.com.bulat.shoppinglistviews.domain.DeleteShopItemUseCase
 import ru.com.bulat.shoppinglistviews.domain.EditShopItemUseCase
 import ru.com.bulat.shoppinglistviews.domain.GetShopListUseCase
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
 
-class MainViewModel : ViewModel() {
+class MainViewModel (application : Application) : AndroidViewModel(application) {
 
-    private val repository = ShopListRepositoryImpl
+    private val repository = ShopListRepositoryImpl(application)
 
     private val getShopListUseCase = GetShopListUseCase(repository)
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
