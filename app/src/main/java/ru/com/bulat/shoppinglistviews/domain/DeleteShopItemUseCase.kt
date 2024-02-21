@@ -4,7 +4,7 @@ class DeleteShopItemUseCase(
     private val shopListRepository: ShopListRepository
 ) {
 
-    fun deleteShopItemUseCase(shopItem: ShopItem){
+    suspend fun deleteShopItemUseCase(shopItem: ShopItem){
         shopListRepository.deleteShopItemUseCase(shopItem)
     }
 }
