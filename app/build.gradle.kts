@@ -53,6 +53,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
+    implementation ("com.google.dagger:dagger:2.50")
+    ksp ("com.google.dagger:dagger-compiler:2.50")
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

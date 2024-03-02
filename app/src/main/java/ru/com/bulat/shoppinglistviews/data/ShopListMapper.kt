@@ -1,8 +1,9 @@
 package ru.com.bulat.shoppinglistviews.data
 
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
+import javax.inject.Inject
 
-class ShopListMapper {
+class ShopListMapper @Inject constructor(){
 
     fun mapEntityToDbModel(shopItem : ShopItem) : ShopItemDbModel = ShopItemDbModel(
         id = shopItem.id,

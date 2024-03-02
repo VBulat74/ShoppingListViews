@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.com.bulat.shoppinglistviews.R
 import ru.com.bulat.shoppinglistviews.databinding.ActivityMainBinding
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
 
@@ -17,7 +18,15 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
 
     private lateinit var binding : ActivityMainBinding
 
+    @Inject
+    lateinit var viewModelFactory : ViewModelFactory
+
+    private val component by lazy {
+        (application as ShopApp).component
+    }
+
     override fun onCreate(savedInstanceState : Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,7 +34,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         setContentView(binding.root)
 
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.shopList.observe(this) { shopItems ->
             shopListAdapter.submitList(shopItems)
         }

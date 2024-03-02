@@ -1,6 +1,8 @@
 package ru.com.bulat.shoppinglistviews.domain
 
-class GetShopItemUseCase(
+import javax.inject.Inject
+
+class GetShopItemUseCase @Inject constructor (
     private val shopListRepository: ShopListRepository
 ) {
 

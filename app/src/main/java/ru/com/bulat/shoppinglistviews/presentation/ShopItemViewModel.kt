@@ -1,32 +1,30 @@
 package ru.com.bulat.shoppinglistviews.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.com.bulat.shoppinglistviews.data.ShopListRepositoryImpl
 import ru.com.bulat.shoppinglistviews.domain.AddShopItemUseCase
 import ru.com.bulat.shoppinglistviews.domain.EditShopItemUseCase
+
 import ru.com.bulat.shoppinglistviews.domain.GetShopItemUseCase
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
+import javax.inject.Inject
 
-class ShopItemViewModel(application : Application) : AndroidViewModel(application) {
-
-    private val repository = ShopListRepositoryImpl(application)
-
-    private val getShopItemUseCase = GetShopItemUseCase(repository)
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
+class ShopItemViewModel @Inject constructor(
+    private val getShopItemUseCase : GetShopItemUseCase,
+    private val addShopItemUseCase : AddShopItemUseCase,
+    private val editShopItemUseCase : EditShopItemUseCase,
+) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName : LiveData<Boolean>
-        get() =  _errorInputName
+        get() = _errorInputName
 
     private val _errorInputCount = MutableLiveData<Boolean>()
     val errorInputCount : LiveData<Boolean>
-        get() =  _errorInputCount
+        get() = _errorInputCount
 
     private val _shopItem = MutableLiveData<ShopItem>()
     val shopItem : LiveData<ShopItem>
@@ -36,19 +34,19 @@ class ShopItemViewModel(application : Application) : AndroidViewModel(applicatio
     val shouldCloseScreen : LiveData<Unit>
         get() = _shouldCloseScreen
 
-    fun getSopItem (shopItemId : Int) {
+    fun getSopItem(shopItemId : Int) {
         viewModelScope.launch {
             val item = getShopItemUseCase.getShopItem(shopItemId)
             _shopItem.value = item
         }
     }
 
-    fun addShopItem (inputName: String?, inputCount: String?) {
+    fun addShopItem(inputName : String?, inputCount : String?) {
         val name = parseName(inputName)
         val count = parseFloat(inputCount)
         val fieldsValid = validateInput(name, count)
-        if (fieldsValid){
-            viewModelScope.launch{
+        if (fieldsValid) {
+            viewModelScope.launch {
                 val shopItem = ShopItem(name = name, count = count, enabled = true)
                 addShopItemUseCase.addShopItem(shopItem)
                 finishWork()
@@ -56,11 +54,11 @@ class ShopItemViewModel(application : Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun editShopItem (inputName: String?, inputCount: String?) {
+    fun editShopItem(inputName : String?, inputCount : String?) {
         val name = parseName(inputName)
         val count = parseFloat(inputCount)
         val fieldsValid = validateInput(name, count)
-        if (fieldsValid){
+        if (fieldsValid) {
             _shopItem.value?.let {
                 viewModelScope.launch {
                     val item = it.copy(name = name, count = count)
@@ -70,11 +68,12 @@ class ShopItemViewModel(application : Application) : AndroidViewModel(applicatio
             }
         }
     }
-    private fun parseName (inputName:String?):String{
+
+    private fun parseName(inputName : String?) : String {
         return inputName?.trim() ?: ""
     }
 
-    private fun parseFloat (inputCount : String?) : Float {
+    private fun parseFloat(inputCount : String?) : Float {
         return try {
             inputCount?.trim()?.toFloat() ?: 0f
         } catch (e : Exception) {
@@ -82,9 +81,9 @@ class ShopItemViewModel(application : Application) : AndroidViewModel(applicatio
         }
     }
 
-    private fun validateInput(name: String, count: Float) : Boolean {
+    private fun validateInput(name : String, count : Float) : Boolean {
         var result = true
-        if (name.isBlank()){
+        if (name.isBlank()) {
             _errorInputName.value = true
             result = false
         }
@@ -95,15 +94,15 @@ class ShopItemViewModel(application : Application) : AndroidViewModel(applicatio
         return result
     }
 
-    fun resetErrorInputName () {
+    fun resetErrorInputName() {
         _errorInputName.value = false
     }
 
-    fun resetErrorInputCount () {
+    fun resetErrorInputCount() {
         _errorInputCount.value = false
     }
 
-    private fun finishWork(){
+    private fun finishWork() {
         _shouldCloseScreen.value = Unit
     }
 }
