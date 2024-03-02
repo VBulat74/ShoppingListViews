@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         }
 
         contentResolver.query(
-            Uri.parse("content://ru.com.bulat.shoppinglistviews/shop_items"),
+            Uri.parse("content://ru.com.bulat.shoppinglistviews/shop_items/3"),
             null,
             null,
             null,
