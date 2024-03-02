@@ -1,5 +1,6 @@
 package ru.com.bulat.shoppinglistviews.presentation
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +49,15 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
             }
 
         }
+
+        contentResolver.query(
+            Uri.parse("content://ru.com.bulat.shoppinglistviews/shop_items"),
+            null,
+            null,
+            null,
+            null,
+            null,
+        )
     }
 
     override fun onEditingFinish() {
