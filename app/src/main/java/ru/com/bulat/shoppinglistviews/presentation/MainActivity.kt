@@ -17,19 +17,19 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
 
-    private lateinit var viewModel : MainViewModel
-    private lateinit var shopListAdapter : ShopListAdapter
+    private lateinit var viewModel: MainViewModel
+    private lateinit var shopListAdapter: ShopListAdapter
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     @Inject
-    lateinit var viewModelFactory : ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     private val component by lazy {
         (application as ShopApp).component
     }
 
-    override fun onCreate(savedInstanceState : Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
         super.onCreate(savedInstanceState)
 
@@ -86,11 +86,11 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         supportFragmentManager.popBackStack()
     }
 
-    private fun isOnePaneMode() : Boolean {
+    private fun isOnePaneMode(): Boolean {
         return binding.shopItemContainer == null
     }
 
-    private fun launchFragment(fragment : Fragment) {
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager
             .beginTransaction()
@@ -118,22 +118,29 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         setupSwipeListener(binding.rvShopList)
     }
 
-    private fun setupSwipeListener(rvShopList : RecyclerView) {
+    private fun setupSwipeListener(rvShopList: RecyclerView) {
         val callBack = object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
-                recyclerView : RecyclerView,
-                viewHolder : RecyclerView.ViewHolder,
-                target : RecyclerView.ViewHolder
-            ) : Boolean {
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
                 return false
             }
 
-            override fun onSwiped(viewHolder : RecyclerView.ViewHolder, direction : Int) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = shopListAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.deleteShopItem(item)
+//                viewModel.deleteShopItem(item)
+                thread {
+                    contentResolver.delete(
+                        Uri.parse("content://ru.com.bulat.shoppinglistviews/shop_items"),
+                        null,
+                        arrayOf(item.id.toString())
+                    )
+                }
             }
         }
         val itemTouchHelper = ItemTouchHelper(callBack)
