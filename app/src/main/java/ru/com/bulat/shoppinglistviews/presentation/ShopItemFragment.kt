@@ -1,6 +1,8 @@
 package ru.com.bulat.shoppinglistviews.presentation
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.com.bulat.shoppinglistviews.databinding.FragmentShopItemBinding
 import ru.com.bulat.shoppinglistviews.domain.ShopItem
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class ShopItemFragment() : Fragment() {
 
@@ -122,10 +125,21 @@ class ShopItemFragment() : Fragment() {
 
     private fun launchAddMode() {
         binding.saveButton.setOnClickListener {
-            viewModel.addShopItem(
-                binding.etName.text?.toString(),
-                binding.etCount.text?.toString()
-            )
+//            viewModel.addShopItem(
+//                binding.etName.text?.toString(),
+//                binding.etCount.text?.toString()
+//            )
+            thread {
+                context?.contentResolver?.insert(
+                    Uri.parse("content://ru.com.bulat.shoppinglistviews/shop_items"),
+                    ContentValues().apply {
+                        put("id", 0,)
+                        put("name", binding.etName.text?.toString(),)
+                        put("count", binding.etCount.text?.toString(),)
+                        put("enabled", true)
+                    },
+                )
+            }
         }
     }
 
