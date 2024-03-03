@@ -3,8 +3,8 @@ package ru.com.bulat.shoppinglistviews.di
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
+import ru.com.bulat.shoppinglistviews.data.ShopListProvider
 import ru.com.bulat.shoppinglistviews.presentation.MainActivity
-import ru.com.bulat.shoppinglistviews.presentation.ShopItemActivity
 import ru.com.bulat.shoppinglistviews.presentation.ShopItemFragment
 
 @AppScope
@@ -19,6 +19,8 @@ interface AppComponent {
     fun inject (activity : MainActivity)
 
     fun inject (activity: ShopItemFragment)
+
+    fun inject (provider : ShopListProvider)
 
     @Component.Factory
     interface Factory {
